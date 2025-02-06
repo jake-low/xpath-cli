@@ -9,7 +9,7 @@ license = "ISC"
 edition = "2021"
 
 [dependencies]
-clap = { version = "4.5.20", features = ["derive", "cargo"] }
+clap = { version = "4.5.28", features = ["derive", "cargo"] }
 libxml = "0.3.3"
 
 [[bin]]
