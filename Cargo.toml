@@ -1,6 +1,6 @@
 [package]
 name = "xpath-cli"
-version = "1.0.0"
+version = "1.1.0"
 description = "Evaluate XPath selectors on XML or HTML documents"
 authors = ["Jake Low <hello@jakelow.com>"]
 homepage = "https://github.com/jake-low/xpath-cli"
