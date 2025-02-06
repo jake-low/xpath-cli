@@ -1,4 +1,6 @@
-`xpath` is a command line utility to evaluate [XPath] expressions on XML or HTML documents. It is a small wrapper around the [libxml2] library.
+# xpath-cli
+
+This is a command line tool called `xpath` which evaluates [XPath] expressions on XML or HTML documents. It is a small wrapper around the excellent [libxml2] library.
 
 ## Example
 
@@ -18,10 +20,15 @@ This Starbucks was torn down, seemingly to have extra space to put Halloween can
 
 ## Installation
 
-This tool is written in Rust, so you'll need to install the Rust compiler to build it.
+This tool is written in Rust, so you'll need to install the Rust compiler and toolchain to build it.
 
-Once you have, clone this repository, `cd` into it, and run `cargo install --path .` to compile and install.
+Once you have, you can install this tool by running `cargo install xpath-cli`
 
+Alternately, you can clone this repository, `cd` into it, and run `cargo install --path .`
+
+## License
+
+The code in this repository is offered under the ISC License. See the [LICENSE](./LICENSE) file for details.
 
 [XPath]: https://en.wikipedia.org/wiki/XPath
 [libxml2]: https://gitlab.gnome.org/GNOME/libxml2/-/wikis/home
