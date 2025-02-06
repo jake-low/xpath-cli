@@ -58,6 +58,15 @@ fn print_results(doc: &Document, results: &Object) -> Result<(), io::Error> {
     Ok(())
 }
 
+/// Sniff the beginning of a string and return true if it appears to be
+/// an HTML document, and false otherwise.
+fn smells_like_html(input: &str) -> bool {
+    let trimmed = input.trim_start();
+    trimmed.starts_with("<!DOCTYPE html>")
+        || trimmed.starts_with("<!DOCTYPE HTML")
+        || trimmed.starts_with("<html>")
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     let args = CliArgs::parse();
     let input = io::read_to_string(&mut io::stdin())?;
@@ -69,10 +78,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     } else {
         // Neither --xml nor --html was given, so sniff the beginning of the input
         // to try and guess the file type
-        let trimmed = input.trim_start();
-        trimmed.starts_with("<!DOCTYPE html>")
-            || trimmed.starts_with("<!DOCTYPE HTML")
-            || trimmed.starts_with("<html>")
+        smells_like_html(&input)
     };
 
     unsafe {
