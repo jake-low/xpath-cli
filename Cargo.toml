@@ -3,8 +3,8 @@ name = "xpath-cli"
 version = "1.0.0"
 description = "Evaluate XPath selectors on XML or HTML documents"
 authors = ["Jake Low <hello@jakelow.com>"]
-homepage = "https://github.com/jake-low/xpath"
-repository = "https://github.com/jake-low/xpath"
+homepage = "https://github.com/jake-low/xpath-cli"
+repository = "https://github.com/jake-low/xpath-cli"
 license = "ISC"
 edition = "2021"
 
