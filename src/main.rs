@@ -1,5 +1,5 @@
 use std::error::Error;
-use std::ffi::{c_char, CStr};
+use std::ffi::CStr;
 use std::io::{self, Write};
 use std::process;
 
@@ -38,7 +38,7 @@ fn pretty_print(doc: &Document, node: &Node) -> String {
             1, // pretty print
         );
         let result = xmlBufferContent(buf);
-        let c_string = CStr::from_ptr(result as *const c_char);
+        let c_string = CStr::from_ptr(result as *const i8);
         let node_string = c_string.to_string_lossy().into_owned();
         xmlBufferFree(buf);
         node_string
