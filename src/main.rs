@@ -68,6 +68,8 @@ fn smells_like_html(input: &str) -> bool {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
+    sigpipe::reset();
+
     let args = CliArgs::parse();
     let input = io::read_to_string(&mut io::stdin())?;
 
@@ -100,14 +102,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         process::exit(2);
     });
 
-    match print_results(&doc, &results) {
-        Ok(_) => Ok(()),
-        Err(e) => {
-            if e.kind() == io::ErrorKind::BrokenPipe {
-                Ok(())
-            } else {
-                Err(e.into())
-            }
-        }
-    }
+    print_results(&doc, &results)?;
+
+    Ok(())
 }

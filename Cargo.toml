@@ -11,6 +11,7 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.28", features = ["derive", "cargo"] }
 libxml = "0.3.3"
+sigpipe = "0.1.3"
 
 [[bin]]
 name = "xpath"
