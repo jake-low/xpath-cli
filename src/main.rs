@@ -1,4 +1,3 @@
-use std::error::Error;
 use std::ffi::CStr;
 use std::io::{self, Write};
 use std::process;
@@ -45,7 +44,7 @@ fn pretty_print(doc: &Document, node: &Node) -> String {
     }
 }
 
-fn print_results(doc: &Document, results: &Object) -> Result<(), io::Error> {
+fn print_nodeset(doc: &Document, results: &Object) -> Result<(), io::Error> {
     for node in results.get_nodes_as_vec() {
         match node.get_type() {
             Some(NodeType::AttributeNode) => writeln!(io::stdout(), "{}", node.get_content())?,
@@ -53,6 +52,48 @@ fn print_results(doc: &Document, results: &Object) -> Result<(), io::Error> {
             Some(NodeType::TextNode) => writeln!(io::stdout(), "{}", node.get_content())?,
             _ => unimplemented!("{:?}", node.get_type()),
         }
+    }
+
+    Ok(())
+}
+
+fn print_results(doc: &Document, results: &Object) -> anyhow::Result<()> {
+    let obj = unsafe { *results.ptr };
+
+    match obj.type_ {
+        libxml::bindings::xmlXPathObjectType_XPATH_UNDEFINED => {
+            todo!("result type XPATH_UNDEFINED");
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_NODESET => {
+            print_nodeset(doc, results)?;
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_BOOLEAN => {
+            assert!(obj.boolval == 0 || obj.boolval == 1);
+            writeln!(io::stdout(), "{}", obj.boolval != 0)?;
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_NUMBER => {
+            writeln!(io::stdout(), "{}", obj.floatval)?;
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_STRING => {
+            let cstr = unsafe { CStr::from_ptr(obj.stringval as *mut i8) };
+            writeln!(io::stdout(), "{}", cstr.to_str()?)?;
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_POINT => {
+            todo!("result type XPATH_POINT");
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_RANGE => {
+            todo!("result type XPATH_RANGE");
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_LOCATIONSET => {
+            todo!("result type XPATH_LOCATIONSET");
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_USERS => {
+            todo!("result type XPATH_USERS");
+        }
+        libxml::bindings::xmlXPathObjectType_XPATH_XSLT_TREE => {
+            todo!("result type XPATH_XSLT_TREE");
+        }
+        _ => panic!("unknown result type: {}", obj.type_),
     }
 
     Ok(())
@@ -67,7 +108,7 @@ fn smells_like_html(input: &str) -> bool {
         || trimmed.starts_with("<html>")
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> anyhow::Result<()> {
     sigpipe::reset();
 
     let args = CliArgs::parse();

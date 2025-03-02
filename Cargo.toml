@@ -9,6 +9,7 @@ license = "ISC"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.96"
 clap = { version = "4.5.28", features = ["derive", "cargo"] }
 libxml = "0.3.3"
 sigpipe = "0.1.3"
